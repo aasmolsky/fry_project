@@ -1,0 +1,30 @@
+require "frai"
+
+# Load environment variables from .env (project-local, git-ignored)
+env_file = File.join(__dir__, "..", ".env")
+if File.exist?(env_file)
+  File.foreach(env_file) do |line|
+    line = line.strip
+    next if line.empty? || line.start_with?("#")
+    key, value = line.split("=", 2)
+    ENV[key] ||= value.to_s.strip
+  end
+end
+
+# Auto-load all Ruby files from the project directories.
+# This makes all tasks, pipelines, agents and tools available
+# without requiring them manually.
+Frai.autoload!(File.expand_path("..", __dir__))
+
+Frai.configure do |config|
+  # Choose your LLM provider. The corresponding gem must be in your Gemfile.
+  # config.adapter = :anthropic   # requires gem "anthropic"
+  # config.adapter = :openai      # requires gem "ruby-openai"
+  # config.adapter = :ollama      # requires gem "ollama-ai"
+
+  # Model name — passed directly to the provider API.
+  # config.model = "claude-opus-4-6"
+
+  # API key — prefer environment variables over hardcoding.
+  # config.api_key = ENV["ANTHROPIC_API_KEY"]
+end

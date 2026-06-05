@@ -1,0 +1,23 @@
+You should follow the next rules:
+1) **Dependency injection** (initializing other service classes in the current service class constructor)
+   Allowed if the current service class can be initialized with an alternative dependency implementation.
+   The alternative implementation must already exist or be planned for the nearest sprints.
+   Example calls: `service_class.new(repo: repo_v1).call`; `service_class.new(repo: repo_v2).call`.
+   Scenarios requiring additional justification:
+- No alternative dependency implementation will be passed.
+- Adding private logic to a superclass. Example: `UserLimits::StatusManager`. The class handles all limit types for all licenses. Adding DI to the constructor for a single license and a single limit type is not allowed.
+- Static arguments. Example: project settings. These can be initialized inside the constructor or memoized in a private method.
+- Called only once inside the service class — can be called directly.
+- Required only for writing tests.
+
+2) **Static values** inside a class must be placed in constants.
+
+3) **Callbacks in controllers** for actions: allowed but not required. Depends on context.
+
+4) **Service class**: `service_class.new.call` is preferred. `self.call` (i.e. `service_class.call`) is allowed only for stateless services without parameters. Example: `UserLimits::StatusManager`, called by cron without parameters for the entire casino.
+
+5) **Kwargs**: required for public methods with three or more parameters. All other cases (two parameters, private methods) — at the developer's discretion.
+
+6) The **`call` method** must reflect the full logic of the service class (without diving into private methods, it should be clear what is happening).
+
+7) **Specs**: if an `it` block contains more than one `expect`, the `aggregate_failures` parameter is mandatory.

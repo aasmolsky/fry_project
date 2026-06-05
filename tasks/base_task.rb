@@ -1,0 +1,57 @@
+require "frai"
+
+# BaseTask is the parent class for all tasks in this project.
+# You don't need to modify this file.
+#
+# Generate a new task with:
+#   frai generate task my_task_name
+#
+# Every task has a main directive as its entry point:
+#   tasks/my_task_name/directives/main.md.erb
+#
+# Task definition levels:
+#
+# 1) Minimal — accepts any input:
+#
+#      class MyTask < BaseTask
+#      end
+#
+#      MyTask.call("some text")
+#
+# 2) With params and constants:
+#
+#      class MyTask < BaseTask
+#        const :threshold, 10
+#
+#        directive :main do
+#          params do
+#            required :name,   String
+#            optional :lang,   String, default: "en"
+#          end
+#        end
+#      end
+#
+#      MyTask.call(name: "item")
+#
+# 3) With sub-directives and scripts:
+#
+#      class MyTask < BaseTask
+#        directive :main do
+#          params do
+#            required :query, String
+#          end
+#          directive :fetch do
+#            script :get_data do
+#              input   String
+#              returns data: String
+#            end
+#          end
+#        end
+#      end
+#
+# In directive templates:
+#   script(:get_data).with(:query).and_return(:data)
+#   directive(:fetch).with(:query).and_return(:data)
+#   <%= data %>
+class BaseTask < Frai::Task
+end
