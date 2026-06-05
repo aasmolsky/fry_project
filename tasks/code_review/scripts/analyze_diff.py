@@ -1,3 +1,5 @@
+# desc: Analyzes the diff metrics for the MR
+
 import sys
 import json
 import hashlib

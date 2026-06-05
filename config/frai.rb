@@ -12,19 +12,9 @@ if File.exist?(env_file)
 end
 
 # Auto-load all Ruby files from the project directories.
-# This makes all tasks, pipelines, agents and tools available
-# without requiring them manually.
 Frai.autoload!(File.expand_path("..", __dir__))
 
 Frai.configure do |config|
-  # Choose your LLM provider. The corresponding gem must be in your Gemfile.
-  # config.adapter = :anthropic   # requires gem "anthropic"
-  # config.adapter = :openai      # requires gem "ruby-openai"
-  # config.adapter = :ollama      # requires gem "ollama-ai"
-
-  # Model name — passed directly to the provider API.
-  # config.model = "claude-opus-4-6"
-
-  # API key — prefer environment variables over hardcoding.
-  # config.api_key = ENV["ANTHROPIC_API_KEY"]
+  config.model   = ENV["LLM_MODEL"]
+  config.api_key = ENV["API_KEY"]
 end

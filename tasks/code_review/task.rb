@@ -44,16 +44,17 @@
 #   frai exec CodeReviewTask
 #   frai exec CodeReviewTask "your input"
 class CodeReviewTask < BaseTask
+  mcp :jira
+  mcp :gitlab
+
   directive :main do
     params do
       required :task_id, String
     end
 
-    directive :check_resources
+    use :code_style_guides
 
-    directive :code_style_guides
-
-    script :analyze_diff do
+    run :analyze_diff do
       input   String
       returns metrics: String
     end
